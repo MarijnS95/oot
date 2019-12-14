@@ -16,7 +16,7 @@ Currently the path to the compilers, ramdisks and kernels are hardcoded, but eas
 
 ## TODO:
 - Add remaining devices
-- Move shared definitions to platforms?
+- Move shared definitions to platforms? This includes sharing part of the cmdline across everything.
 - Generic script that receives one or more platforms/devices, and builds them all
   (Or is that really only relevant for the inline buildscripts?)
 - Options to specify alternate ramdisk and kernel directory?
