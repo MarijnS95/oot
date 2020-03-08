@@ -1,7 +1,7 @@
 #! /usr/bin/bash
 
 # See PLATFORM_SECURITY_PATCH in build/make/core/version_defaults.mk
-_os_patch_level='2019-12-05'
+_os_patch_level='2020-03-05'
 _os_version=10
 
 echo "==> Generating images for patch level $_os_patch_level"
