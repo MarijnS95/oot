@@ -17,8 +17,23 @@ fi
 
 if [ "$_permissive" = "true" ]; then
     echo "==> Adding permissive to cmdline"
-    BOARD_KERNEL_CMDLINE="androidboot.selinux=permissive $BOARD_KERNEL_CMDLINE"
+    BOARD_KERNEL_CMDLINE="$BOARD_KERNEL_CMDLINE androidboot.selinux=permissive"
+    #  enforcing=0 selinux=0
 fi
+# TODO MOVE IT ALL HERE
+# BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive
+#BOARD_KERNEL_CMDLINE += console=ttyMSM0,115200,n8 androidboot.console=ttyMSM0
+BOARD_KERNEL_CMDLINE="$BOARD_KERNEL_CMDLINE androidboot.memcg=1"
+BOARD_KERNEL_CMDLINE="$BOARD_KERNEL_CMDLINE msm_rtb.filter=0x3F ehci-hcd.park=3"
+BOARD_KERNEL_CMDLINE="$BOARD_KERNEL_CMDLINE coherent_pool=8M"
+BOARD_KERNEL_CMDLINE="$BOARD_KERNEL_CMDLINE sched_enable_power_aware=1 user_debug=31"
+BOARD_KERNEL_CMDLINE="$BOARD_KERNEL_CMDLINE printk.devkmsg=on"
+BOARD_KERNEL_CMDLINE="$BOARD_KERNEL_CMDLINE loop.max_part=16"
+BOARD_KERNEL_CMDLINE="$BOARD_KERNEL_CMDLINE kpti=0"
+BOARD_KERNEL_CMDLINE="$BOARD_KERNEL_CMDLINE androidboot.hardware=$_device"
+
+echo $BOARD_KERNEL_CMDLINE
+
 
 echo "==> Creating $_boot_out..."
 
