@@ -11,7 +11,7 @@ echo "==> Building $_defconfig"
 make $_make_vars $_defconfig
 
 echo "==> Building $_targets with AOSP gcc"
-make $_make_vars CROSS_COMPILE="/usr/bin/ccache $_cross_compile" $_targets
+make $_make_vars CROSS_COMPILE="$_cross_compile" $_targets
 
 echo "==> $_targets compiled successfully"
 popd

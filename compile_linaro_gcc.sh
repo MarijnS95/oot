@@ -13,8 +13,8 @@ echo "==> Building $_defconfig"
 make $_make_vars $_defconfig
 
 echo "==> Building $_targets with Linaro gcc"
-echo $_make_vars CROSS_COMPILE="/usr/bin/ccache $_cross_compile" $_targets
-time make $_make_vars CROSS_COMPILE="/usr/bin/ccache $_cross_compile" CROSS_COMPILE_ARM32="/usr/bin/ccache $_cross_compile_32" $_targets
+echo $_make_vars CROSS_COMPILE="$_cross_compile" $_targets
+time make $_make_vars CROSS_COMPILE="$_cross_compile" CROSS_COMPILE_ARM32="$_cross_compile_32" $_targets
 
 echo "==> $_targets compiled successfully"
 popd

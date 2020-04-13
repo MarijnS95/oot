@@ -12,7 +12,7 @@ echo "==> Building $_defconfig"
 make $_make_vars $_defconfig
 
 echo "==> Building $_targets with clang"
-make $_make_vars CROSS_COMPILE="/usr/bin/ccache $_cross_compile" CC="/usr/bin/ccache ${_clang_path}/clang" CLANG_TRIPLE=aarch64-linux-gnu $_targets
+make $_make_vars CROSS_COMPILE="$_cross_compile" CC="${_clang_path}/clang" CLANG_TRIPLE=aarch64-linux-gnu $_targets
 
 echo "==> $_targets compiled successfully"
 popd

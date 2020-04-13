@@ -11,11 +11,6 @@ for opt in "$@"; do
     esac
 done
 
-export USE_CCACHE=1
-#export CCACHE_DIR=/data/ccache
-export CCACHE_DIR="$HOME/.aosp-ccache"
-export CCACHE_COMPRESS=1
-
 _kernel_major=4
 _kernel_minor=14
 
