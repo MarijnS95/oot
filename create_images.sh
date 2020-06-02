@@ -4,7 +4,7 @@
 
 _os_patch_level=$(grep -Po 'PLATFORM_SECURITY_PATCH\s+:=\s+\K([0-9]{4}(-[0-9]{2}){2})' build/make/core/version_defaults.mk)
 if [ -z "$_os_patch_level" ]; then
-    _os_patch_level='2020-03-05'
+    _os_patch_level='2020-06-05'
     echo "WARNING: Patch level not found in Android tree. Using $_os_patch_level"
 else
     echo "Using SPL $_os_patch_level from Android tree"
