@@ -23,7 +23,7 @@ BOARD_KERNEL_CMDLINE="$BOARD_KERNEL_CMDLINE msm_drm.blhack_dsi_display0=dsi_pane
 #BOARD_KERNEL_CMDLINE += earlycon=msm_geni_serial,0xa90000
 
 # Options
-_permissive=true
+# _permissive=true
 _compiler=linaro_gcc
 
 _self_dir=$(realpath $(dirname "$0"))
