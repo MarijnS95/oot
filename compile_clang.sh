@@ -1,7 +1,9 @@
 #! /usr/bin/bash
 
 _cross_compile=$(realpath "$ANDROID_ROOT/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin/aarch64-linux-android-")
-_clang_path=$(realpath "$ANDROID_ROOT/prebuilts/clang/host/linux-x86/clang-4691093/bin/")
+_clang_path=$(realpath "$ANDROID_ROOT/prebuilts/clang/host/linux-x86/")
+_clang_path=$(ls -1d "$_clang_path/clang-r"*/bin | tail -1)
+echo "==> Using clang $_clang_path"
 
 _defconfig=aosp_${_platform}_${_device}_defconfig
 
