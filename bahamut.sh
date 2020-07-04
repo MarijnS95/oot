@@ -19,7 +19,7 @@ BOARD_KERNEL_CMDLINE="lpm_levels.sleep_disabled=1"
 BOARD_KERNEL_CMDLINE="$BOARD_KERNEL_CMDLINE androidboot.bootdevice=1d84000.ufshc"
 BOARD_KERNEL_CMDLINE="$BOARD_KERNEL_CMDLINE swiotlb=2048"
 BOARD_KERNEL_CMDLINE="$BOARD_KERNEL_CMDLINE service_locator.enable=1"
-BOARD_KERNEL_CMDLINE="$BOARD_KERNEL_CMDLINE msm_drm.blhack_dsi_display0=dsi_panel_somc_kumano_cmd:config0"
+BOARD_KERNEL_CMDLINE="$BOARD_KERNEL_CMDLINE msm_drm.blhack_dsi_display0=dsi_panel_somc_${_platform}_cmd:config0"
 #BOARD_KERNEL_CMDLINE += earlycon=msm_geni_serial,0xa90000
 
 # Options
