@@ -25,7 +25,12 @@ _out=$ANDROID_ROOT/out/kernel-$_kernel_major$_kernel_minor/$_compiler/$_device
 _kernel=$_out/arch/arm64/boot/Image.gz-dtb
 _make_vars="O=$_out ARCH=arm64 -j$(nproc)"
 _kernel_path=$(realpath $ANDROID_ROOT/kernel/sony/msm-$_kernel_major.$_kernel_minor/kernel)
-_ramdisk=out/target/product/$_device/ramdisk-recovery.img
+# True by default:
+if [ "$_recovery_ramdisk" = "false" ]; then
+    _ramdisk=out/target/product/$_device/ramdisk.img
+else
+    _ramdisk=out/target/product/$_device/ramdisk-recovery.img
+fi
 _boot_out=$_device-boot.img
 
 if [ ! -f $_ramdisk ]; then
