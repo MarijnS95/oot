@@ -57,5 +57,5 @@ if [ "$FASTBOOT_FLASH" = "true" ]; then
     fi
 
     echo "==> Rebooting device..."
-    fastboot reboot
+    fastboot continue || fastboot reboot
 fi
