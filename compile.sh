@@ -2,14 +2,6 @@
 
 set -e
 
-for opt in "$@"; do
-    case $opt in
-        -f)
-            FASTBOOT_FLASH=true
-            echo "==> Option: Flashing images after build"
-        ;;
-    esac
-done
 
 _kernel_major=4
 _kernel_minor=14
@@ -48,7 +40,7 @@ _self_dir=$(realpath $(dirname "$0"))
 . $_self_dir/compile_$_compiler.sh
 . $_self_dir/create_images.sh
 
-if [ "$FASTBOOT_FLASH" = "true" ]; then
+if [ "$_fastboot_flash" = "true" ]; then
     echo "==> Flashing $_boot_out"
     fastboot flash boot $_boot_out
     if [ "$_has_dtbo" = "true" ]; then
