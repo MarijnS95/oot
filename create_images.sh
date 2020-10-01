@@ -44,6 +44,6 @@ echo "$BOARD_KERNEL_CMDLINE"
 
 echo "==> Creating $_boot_out..."
 
-mkbootimg --kernel "$_kernel" --ramdisk "$_ramdisk" --cmdline "$BOARD_KERNEL_CMDLINE" --base "$BOARD_KERNEL_BASE" --pagesize "$BOARD_KERNEL_PAGESIZE" --os_version "$_os_version" --os_patch_level "$_os_patch_level" --ramdisk_offset "$BOARD_RAMDISK_OFFSET" --tags_offset "$BOARD_KERNEL_TAGS_OFFSET" --output "$_boot_out" --id
+$ANDROID_ROOT/out/host/linux-x86/bin/mkbootimg --kernel "$_kernel" --ramdisk "$_ramdisk" --cmdline "$BOARD_KERNEL_CMDLINE" --base "$BOARD_KERNEL_BASE" --pagesize "$BOARD_KERNEL_PAGESIZE" --os_version "$_os_version" --os_patch_level "$_os_patch_level" --ramdisk_offset "$BOARD_RAMDISK_OFFSET" --tags_offset "$BOARD_KERNEL_TAGS_OFFSET" --output "$_boot_out" --id
 
 echo "==> mkbootimg successful, created $_boot_out"
