@@ -18,7 +18,7 @@ if [ -z "$ANDROID_BUILD_TOP" ]; then
     ANDROID_ROOT=$(realpath "$_self_dir/../")
     echo "WARNING: ANDROID_BUILD_TOP not set, guessing root at $ANDROID_ROOT"
 else
-    ANDROID_ROOT="$ANDROID_BUILD_TOP"
+    ANDROID_ROOT=$(realpath "$ANDROID_BUILD_TOP")
 fi
 
 _out=$ANDROID_ROOT/out/kernel-$_kernel_major$_kernel_minor/$_compiler/$_device
