@@ -2,8 +2,9 @@
 
 _cross_compile=$(realpath "$ANDROID_ROOT/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin/aarch64-linux-android-")
 _cross_compile_32=$(realpath "$ANDROID_ROOT/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/bin/arm-linux-androideabi-")
-_clang_path=$(realpath "$ANDROID_ROOT/prebuilts/clang/host/linux-x86/")
-_clang_path=$(ls -1d "$_clang_path/clang-r"*/bin | tail -1)
+# Get the clang version from current AOSP documentation
+_clang_version=$(awk '/^\* \[\*\*Android Linux Kernel/{f=NR} /^  \* Currently clang-/ && f==NR-1 {print $NF; exit}' $ANDROID_ROOT/prebuilts/clang/host/linux-x86/README.md)
+_clang_path=$(realpath "$ANDROID_ROOT/prebuilts/clang/host/linux-x86/$_clang_version/bin")
 echo "==> Using clang $_clang_path"
 
 _defconfig=aosp_${_platform}_${_device}_defconfig
