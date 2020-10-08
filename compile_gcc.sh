@@ -1,6 +1,6 @@
 #! /usr/bin/bash
 
-_cross_compile=$(realpath "$ANDROID_ROOT/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin/aarch64-linux-android-")
+_cross_compile="$ANDROID_ROOT/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin/aarch64-linux-android-"
 
 _defconfig=aosp_${_platform}_${_device}_defconfig
 

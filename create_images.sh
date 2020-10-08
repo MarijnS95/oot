@@ -16,7 +16,7 @@ echo "==> Generating images for patch level $_os_patch_level"
 # mkdir -p $(dirname $_boot_out)
 
 if [[ "$_has_dtbo" == "true" ]]; then
-    _dts_folder=$(realpath "$_out/arch/arm64/boot/dts/qcom")
+    _dts_folder="$_out/arch/arm64/boot/dts/qcom"
     _files=$(find "$_dts_folder" -iname "*.dtbo")
     echo "==> Creating dtboimg from $_files"
     "$_kernel_path/scripts/mkdtboimg.py" create "$_device-dtbo.img" --page_size="$BOARD_KERNEL_PAGESIZE" "$_files"
