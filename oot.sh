@@ -32,7 +32,7 @@ while getopts 'c:fh-:' OPT; do
         esac
         ;;
     c)
-        if [[ -f "$_self_dir/compile_$OPTARG.sh" ]]; then
+        if [[ -f "$_self_dir/setup_$OPTARG.sh" ]]; then
             _compiler=${OPTARG}
         else
             echo "Compiler '${OPTARG}' unknown or not implemented"

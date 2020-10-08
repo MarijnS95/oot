@@ -15,7 +15,6 @@ fi
 
 _out=$ANDROID_ROOT/out/kernel-$_kernel_major$_kernel_minor/$_compiler/$_device
 _kernel=$_out/arch/arm64/boot/Image.gz-dtb
-_make_vars="O=$_out ARCH=arm64 -j$(nproc)"
 _kernel_path="$ANDROID_ROOT/kernel/sony/msm-$_kernel_major.$_kernel_minor/kernel"
 # True by default:
 if [ "$_recovery_ramdisk" = "false" ]; then
@@ -36,8 +35,27 @@ if [ "$_has_dtbo" = "true" ]; then
     _dtbo_out=$_device-dtbo.img
 fi
 
+_make_args="O=$_out ARCH=arm64 -j$(nproc)"
+
 _self_dir=$(realpath $(dirname "$0"))
-. $_self_dir/compile_$_compiler.sh
+. $_self_dir/setup_$_compiler.sh
+
+_build_cmd="make $_make_args"
+
+_defconfig=aosp_${_platform}_${_device}_defconfig
+
+echo "==> Entering $_kernel_path"
+pushd "$_kernel_path" || (echo "ERROR: Failed to cd into kernel source!"; exit 1)
+
+    echo "==> Building $_defconfig"
+    $_build_cmd $_defconfig
+
+    echo "==> Building $_targets with $_compiler"
+    time $_build_cmd $_targets
+
+    echo "==> $_targets compiled successfully"
+popd
+
 . $_self_dir/create_images.sh
 
 if [ "$_fastboot_flash" = "true" ]; then
