@@ -40,6 +40,9 @@ _make_args="O=$_out ARCH=arm64 -j$(nproc)"
 _self_dir=$(realpath $(dirname "$0"))
 . $_self_dir/setup_$_compiler.sh
 
+_cross_compile_32="$ANDROID_ROOT/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/bin/arm-linux-androideabi-"
+_make_args+=" CROSS_COMPILE_ARM32=$_cross_compile_32"
+
 _build_cmd="make $_make_args"
 
 _defconfig=aosp_${_platform}_${_device}_defconfig
