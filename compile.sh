@@ -59,7 +59,8 @@ pushd "$_kernel_path" || (echo "ERROR: Failed to cd into kernel source!"; exit 1
     echo "==> $_targets compiled successfully"
 popd
 
-. $_self_dir/create_images.sh
+# shellcheck source=./create_images.sh
+. "$_self_dir/create_images.sh"
 
 if [ "$_fastboot_flash" = "true" ]; then
     echo "==> Flashing $_boot_out"

@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 
 
-_self_dir=$(realpath "$(dirname "$0")")
+_self_dir=$(dirname "${BASH_SOURCE[0]}")
 
 
 function usage {
@@ -143,6 +143,7 @@ for _device in "$@"; do
     # Options
     # _permissive=true
 
+    # shellcheck source=./compile.sh
     . "$_self_dir/compile.sh"
 
     echo

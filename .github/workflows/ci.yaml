@@ -12,5 +12,7 @@ jobs:
         run: |
           sudo apt update
           sudo apt install shellcheck
+      - name: Shellcheck version
+        run: shellcheck -V
       - name: Run shellcheck
-        run: shellcheck oot.sh
+        run: shellcheck -x oot.sh
