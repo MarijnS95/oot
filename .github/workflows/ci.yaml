@@ -1,0 +1,16 @@
+on: push
+
+name: CI
+
+jobs:
+  shellcheck:
+    name: Shellcheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install shellcheck
+        run: |
+          sudo apt update
+          sudo apt install shellcheck
+      - name: Run shellcheck
+        run: shellcheck oot.sh
