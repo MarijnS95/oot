@@ -12,11 +12,12 @@ function usage {
     echo -e '\t-c <compiler>          Select a compiler to use.'
     echo -e '\t                       Currently supported compilers are gcc, linaro_gcc and clang (defaults to clang).'
     echo -e '\t-f                     Flash the kernel after compiling (using fastboot).'
+    echo -e '\t-s                     Separate per-device kernel tmp dir instead of per-platform.'
     echo -e '\t-h, --help             Show the usage of the tool'
 }
 
 
-while getopts 'c:fh-:' OPT; do
+while getopts 'c:fsh-:' OPT; do
     case ${OPT} in
     -)
         case ${OPTARG} in
@@ -41,6 +42,9 @@ while getopts 'c:fh-:' OPT; do
         ;;
     f)
         _fastboot_flash=true
+        ;;
+    s)
+        _separate_kernel_dir=true
         ;;
     h)
         usage
