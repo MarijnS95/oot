@@ -141,6 +141,9 @@ for _device in "$@"; do
         BOARD_KERNEL_CMDLINE+=" androidboot.bootdevice=1d84000.ufshc"
         BOARD_KERNEL_CMDLINE+=" swiotlb=2048"
         ;;
+    yoshino)
+        _recovery_ramdisk=false
+        ;;
     esac
 
 

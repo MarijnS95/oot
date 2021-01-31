@@ -22,7 +22,7 @@ else
 fi
 _kernel=$_out/arch/arm64/boot/Image.gz-dtb
 _kernel_path="$ANDROID_ROOT/kernel/sony/msm-$_kernel_major.$_kernel_minor/kernel"
-# True by default:
+# True by default, analogous to BOARD_USES_RECOVERY_AS_BOOT:
 if [ "$_recovery_ramdisk" = "false" ]; then
     _ramdisk=$ANDROID_ROOT/out/target/product/$_device/ramdisk.img
 else
