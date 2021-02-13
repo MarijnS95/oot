@@ -9,10 +9,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Install shellcheck
+        id: install-shellcheck
         run: |
           sudo apt update
           sudo apt install shellcheck
-      - name: Shellcheck version
+          echo "::set-output name=version::$(shellcheck -V | sed -n 's/version: //p')"
+      - name: Shellcheck version ${{ steps.install-shellcheck.outputs.version }}
         run: shellcheck -V
       - name: Run shellcheck
         run: shellcheck -x oot.sh
