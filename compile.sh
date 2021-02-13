@@ -2,10 +2,6 @@
 
 set -e
 
-
-_kernel_major=4
-_kernel_minor=14
-
 if [ -z "$ANDROID_BUILD_TOP" ]; then
     ANDROID_ROOT=$(realpath "$_self_dir/../")
     echo "WARNING: ANDROID_BUILD_TOP not set, guessing root at $ANDROID_ROOT"

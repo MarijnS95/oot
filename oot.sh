@@ -83,8 +83,15 @@ for _device in "$@"; do
     BOARD_KERNEL_CMDLINE+=" service_locator.enable=1"
     BOARD_KERNEL_CMDLINE+=" androidboot.hardware=${_device}"
 
+    _kernel_major=4
+    _kernel_minor=14
+
     # Device specific
     case ${_device} in
+    pdx20[36])
+        _platform=edo
+        _kernel_minor=19
+        ;;
     kirin|mermaid)
         _platform=ganges
         ;;
@@ -121,6 +128,14 @@ for _device in "$@"; do
 
     # Platform specific
     case ${_platform} in
+    edo)
+        _has_dtbo=true
+        _recovery_ramdisk=false
+
+        BOARD_KERNEL_CMDLINE+=" msm_drm.blhack_dsi_display0=dsi_panel_somc_${_platform}_cmd:config0"
+        BOARD_KERNEL_CMDLINE+=" androidboot.bootdevice=1d84000.ufshc"
+        BOARD_KERNEL_CMDLINE+=" swiotlb=2048"
+        ;;
     kumano)
         _has_dtbo=true
 
