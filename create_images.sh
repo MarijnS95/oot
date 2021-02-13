@@ -19,7 +19,16 @@ if [[ "$_has_dtbo" == "true" ]]; then
     _dts_folder="$_out/arch/arm64/boot/dts/qcom"
     _files=$(find "$_dts_folder" -iname "*.dtbo")
     echo "==> Creating dtboimg from $_files"
-    "$_kernel_path/scripts/mkdtboimg.py" create "$_device-dtbo.img" --page_size="$BOARD_KERNEL_PAGESIZE" $_files
+    _mkdtboimg="$_kernel_path/scripts/mkdtboimg.py"
+    if [[ ! -f "$_mkdtboimg" ]]; then
+        _mkdtboimg="$ANDROID_ROOT/prebuilts/misc/linux-x86/libufdt/mkdtimg"
+    fi
+    if [[ ! -f "$_mkdtboimg" ]]; then
+        _mkdtboimg="$ANDROID_ROOT/system/libufdt/utils/src/mkdtboimg.py"
+    fi
+    echo "==> Using mkdtbo at $_mkdtboimg"
+    # --page_size="$BOARD_KERNEL_PAGESIZE"
+    "$_mkdtboimg" create "$_device-dtbo.img" $_files
 fi
 
 if [[ "$_permissive" == "true" ]]; then
