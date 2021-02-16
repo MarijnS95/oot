@@ -10,7 +10,7 @@ Currently the path to the compilers, ramdisks and kernels are hardcoded, but eas
 ## Usage:
 
 1. Clone directly into your AOSP tree (or make sure `ANDROID_BUILD_TOP` is set to the right path).
-2. Call `./oot/<device name>.sh`
+2. Call `./oot/oot.sh <device name>`
    Keep in mind that not all devices have a script yet.
 3. Flash the images. For simplicity, you can also add the `-f` option to the command, that will flash and `fastboot reboot` the device after building.
 
