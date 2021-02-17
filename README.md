@@ -9,16 +9,10 @@ Currently the path to the compilers, ramdisks and kernels are hardcoded, but eas
 
 ## Usage:
 
-1. Clone directly into your AOSP tree (or make sure `ANDROID_BUILD_TOP` is set to the right path).
-2. Call `./oot/oot.sh <device name>`
-   Keep in mind that not all devices have a script yet.
+1. Clone directly in the root of an AOSP tree (or point the `ANDROID_BUILD_TOP` environment variable to this root);
+2. Call `./oot/oot.sh <device name>` (use `-h` to see more options);
 3. Flash the images. For simplicity, you can also add the `-f` option to the command, that will flash and `fastboot reboot` the device after building.
 
 ## TODO:
-- Add remaining devices
-- Move shared definitions to platforms? This includes sharing part of the cmdline across everything.
-- Generic script that receives one or more platforms/devices, and builds them all
-  (Or is that really only relevant for the inline buildscripts?)
+- Expand platforms passed to this script (ie. passing `kumano` builds `griffin` and `bahamut`);
 - Options to specify alternate ramdisk and kernel directory?
-- Deduplicate `compile_$compiler.sh` scripts; only the `make` arguments change.
-- Clean code with tips from `shellcheck`
