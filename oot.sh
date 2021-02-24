@@ -118,6 +118,9 @@ for _device in "$@"; do
     lilac|maple|poplar)
         _platform=yoshino
         ;;
+    suzu|kugo)
+        _platform=loire
+        ;;
     *)
         echo "Device '${_device}' unknown or not implemented"
         exit 1
