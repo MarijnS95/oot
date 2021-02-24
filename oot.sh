@@ -96,6 +96,9 @@ for _device in "$@"; do
 
     # Device specific
     case ${_device} in
+    suzu|kugo)
+        _platform=loire
+        ;;
     lilac|maple|poplar)
         _platform=yoshino
         ;;
