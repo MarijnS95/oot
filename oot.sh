@@ -167,6 +167,9 @@ for _device in "$@"; do
     # Platform specific
     case ${_platform} in
     loire)
+        # Necessary to find fstab on the ramdisk:
+        BOARD_KERNEL_CMDLINE+=" androidboot.boot_devices=soc/7824900.sdhci"
+        # Creates a /dev/block/bootdevice link to this device:
         BOARD_KERNEL_CMDLINE+=" androidboot.bootdevice=7824900.sdhci"
         BOARD_KERNEL_CMDLINE+=" earlycon=msm_serial_dm,0x7af0000"
         BOARD_KERNEL_CMDLINE+=" console=ttyMSM0"
