@@ -1,7 +1,15 @@
 #!/usr/bin/bash
 
+set -e
 
 _self_dir=$(dirname "${BASH_SOURCE[0]}")
+
+if [ -z "$ANDROID_BUILD_TOP" ]; then
+    ANDROID_ROOT=$(realpath "$_self_dir/../")
+    echo "WARNING: ANDROID_BUILD_TOP not set, guessing root at $ANDROID_ROOT"
+else
+    ANDROID_ROOT=$(realpath "$ANDROID_BUILD_TOP")
+fi
 
 
 function usage {
@@ -167,6 +175,23 @@ for _device in "$@"; do
 
     # shellcheck source=./compile.sh
     . "$_self_dir/compile.sh"
+
+    _boot_out=${_device}-boot.img
+
+    # shellcheck source=./create_images.sh
+    . "$_self_dir/create_images.sh"
+
+    if [ "$_fastboot_flash" = "true" ]; then
+        echo "==> Flashing $_boot_out"
+        fastboot flash boot "$_boot_out"
+        if [ "$_has_dtbo" = "true" ]; then
+            echo "==> Flashing $_dtbo_out"
+            fastboot flash dtbo "$_dtbo_out"
+        fi
+
+        echo "==> Rebooting device..."
+        fastboot continue || fastboot reboot
+    fi
 
     echo
 done

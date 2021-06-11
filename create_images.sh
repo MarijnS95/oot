@@ -13,6 +13,12 @@ _os_version=10
 
 echo "==> Generating images for patch level $_os_patch_level"
 
+# True by default, analogous to BOARD_USES_RECOVERY_AS_BOOT:
+[ "$_recovery_ramdisk" = "false" ] && _ramdisk=ramdisk.img || _ramdisk=ramdisk-recovery.img
+_ramdisk=$ANDROID_ROOT/out/target/product/$_device/$_ramdisk
+
+[ ! -f "$_ramdisk" ] && echo "WARNING: $_ramdisk does not exist!"
+
 # mkdir -p $(dirname $_boot_out)
 
 if [[ "$_has_dtbo" == "true" ]]; then
@@ -20,12 +26,9 @@ if [[ "$_has_dtbo" == "true" ]]; then
     _files=$(find "$_dts_folder" -iname "*.dtbo")
     echo "==> Creating dtboimg from $_files"
     _mkdtboimg="$_kernel_path/scripts/mkdtboimg.py"
-    if [[ ! -f "$_mkdtboimg" ]]; then
-        _mkdtboimg="$ANDROID_ROOT/prebuilts/misc/linux-x86/libufdt/mkdtimg"
-    fi
-    if [[ ! -f "$_mkdtboimg" ]]; then
-        _mkdtboimg="$ANDROID_ROOT/system/libufdt/utils/src/mkdtboimg.py"
-    fi
+    [[ ! -f "$_mkdtboimg" ]] && _mkdtboimg="$ANDROID_ROOT/prebuilts/misc/linux-x86/libufdt/mkdtimg"
+    [[ ! -f "$_mkdtboimg" ]] && _mkdtboimg="$ANDROID_ROOT/system/libufdt/utils/src/mkdtboimg.py"
+    [[ ! -f "$_mkdtboimg" ]] && (echo "No mkdtbo script/executable found"; exit 1)
     echo "==> Using mkdtbo at $_mkdtboimg"
     # --page_size="$BOARD_KERNEL_PAGESIZE"
     "$_mkdtboimg" create "$_device-dtbo.img" $_files
