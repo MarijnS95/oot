@@ -1,14 +1,5 @@
 #! /usr/bin/bash
 
-set -e
-
-if [ -z "$ANDROID_BUILD_TOP" ]; then
-    ANDROID_ROOT=$(realpath "$_self_dir/../")
-    echo "WARNING: ANDROID_BUILD_TOP not set, guessing root at $ANDROID_ROOT"
-else
-    ANDROID_ROOT=$(realpath "$ANDROID_BUILD_TOP")
-fi
-
 if [ "$_separate_kernel_dir" == "true" ]; then
     # One kernel tmp/out dir per device
     _out=$ANDROID_ROOT/out/kernel-$_kernel_major.$_kernel_minor/$_compiler/$_device
@@ -18,17 +9,6 @@ else
 fi
 _kernel=$_out/arch/arm64/boot/Image.gz-dtb
 _kernel_path="$ANDROID_ROOT/kernel/sony/msm-$_kernel_major.$_kernel_minor/kernel"
-# True by default, analogous to BOARD_USES_RECOVERY_AS_BOOT:
-if [ "$_recovery_ramdisk" = "false" ]; then
-    _ramdisk=$ANDROID_ROOT/out/target/product/$_device/ramdisk.img
-else
-    _ramdisk=$ANDROID_ROOT/out/target/product/$_device/ramdisk-recovery.img
-fi
-_boot_out=$_device-boot.img
-
-if [ ! -f $_ramdisk ]; then
-    echo "WARNING: $_ramdisk does not exist!"
-fi
 
 _targets=Image.gz-dtb
 
@@ -57,18 +37,3 @@ pushd "$_kernel_path" || (echo "ERROR: Failed to cd into kernel source!"; exit 1
 
     echo "==> $_targets compiled successfully"
 popd
-
-# shellcheck source=./create_images.sh
-. "$_self_dir/create_images.sh"
-
-if [ "$_fastboot_flash" = "true" ]; then
-    echo "==> Flashing $_boot_out"
-    fastboot flash boot $_boot_out
-    if [ "$_has_dtbo" = "true" ]; then
-        echo "==> Flashing $_dtbo_out"
-        fastboot flash dtbo $_dtbo_out
-    fi
-
-    echo "==> Rebooting device..."
-    fastboot continue || fastboot reboot
-fi
