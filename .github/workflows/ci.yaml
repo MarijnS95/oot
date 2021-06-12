@@ -15,4 +15,4 @@ jobs:
       - name: Shellcheck version
         run: shellcheck -V
       - name: Run shellcheck
-        run: shellcheck -x oot.sh
+        run: shellcheck -ax oot.sh
