@@ -164,6 +164,8 @@ for _device in "$@"; do
         ;;
     esac
 
+    _ramdisk=$(realpath ~/Downloads/Telegram\ Desktop/debug_initrd.img)
+
     # Platform specific
     case ${_platform} in
     loire)
@@ -196,7 +198,7 @@ for _device in "$@"; do
     kumano)
         _has_dtbo=true
 
-        BOARD_KERNEL_CMDLINE+=" androidboot.bootdevice=1d84000.ufshc"
+        # BOARD_KERNEL_CMDLINE+=" androidboot.bootdevice=1d84000.ufshc"
         BOARD_KERNEL_CMDLINE+=" swiotlb=2048"
         ;;
     seine)
@@ -207,7 +209,7 @@ for _device in "$@"; do
         _has_dtbo=true
         _recovery_ramdisk=false
 
-        BOARD_KERNEL_CMDLINE+=" androidboot.bootdevice=1d84000.ufshc"
+        # BOARD_KERNEL_CMDLINE+=" androidboot.bootdevice=1d84000.ufshc"
         BOARD_KERNEL_CMDLINE+=" swiotlb=2048"
         ;;
     lena)
@@ -251,7 +253,7 @@ for _device in "$@"; do
         _recovery_ramdisk=false
         ;;
     *)
-        _recovery_ramdisk=true
+        # _recovery_ramdisk=true TODO
         BOARD_KERNEL_CMDLINE+=" androidboot.force_normal_boot=1"
         ;;
     esac

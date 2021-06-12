@@ -9,13 +9,15 @@ else
     echo "WARNING: Patch level not found in Android tree. Using $_os_patch_level"
 fi
 
-_os_version=10
+_os_version=11
 
 echo "==> Generating images for patch level $_os_patch_level"
 
 # True by default, analogous to BOARD_USES_RECOVERY_AS_BOOT:
-[ "$_recovery_ramdisk" = "false" ] && _ramdisk=ramdisk.img || _ramdisk=ramdisk-recovery.img
-_ramdisk=$ANDROID_ROOT/out/target/product/$_device-mainline/$_ramdisk
+if [ -z "$_ramdisk" ]; then
+    [ "$_recovery_ramdisk" = "false" ] && _ramdisk=ramdisk.img || _ramdisk=ramdisk-recovery.img
+    _ramdisk=$ANDROID_ROOT/out/target/product/$_device-mainline/$_ramdisk
+fi
 
 [ ! -f "$_ramdisk" ] && echo "WARNING: $_ramdisk does not exist!"
 
