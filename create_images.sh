@@ -31,10 +31,12 @@ if [[ "$_has_dtbo" == "true" ]]; then
     [[ ! -f "$_mkdtboimg" ]] && (echo "No mkdtbo script/executable found"; exit 1)
     echo "==> Using mkdtbo at $_mkdtboimg"
     # --page_size="$BOARD_KERNEL_PAGESIZE"
+    # _files requires word splitting (Tama has multiple dtbo files)
+    # shellcheck disable=SC2086
     "$_mkdtboimg" create "$_device-dtbo.img" $_files
 fi
 
-if [[ "$_permissive" == "true" ]]; then
+if [[ "${_permissive:-false}" == "true" ]]; then
     echo "==> Adding permissive to cmdline"
     BOARD_KERNEL_CMDLINE+=" androidboot.selinux=permissive"
     #  enforcing=0 selinux=0
@@ -55,6 +57,6 @@ echo "$BOARD_KERNEL_CMDLINE"
 
 echo "==> Creating $_boot_out..."
 
-$ANDROID_ROOT/out/host/linux-x86/bin/mkbootimg --kernel "$_kernel" --ramdisk "$_ramdisk" --cmdline "$BOARD_KERNEL_CMDLINE" --base "$BOARD_KERNEL_BASE" --pagesize "$BOARD_KERNEL_PAGESIZE" --os_version "$_os_version" --os_patch_level "$_os_patch_level" --ramdisk_offset "$BOARD_RAMDISK_OFFSET" --tags_offset "$BOARD_KERNEL_TAGS_OFFSET" --output "$_boot_out" --id
+"$ANDROID_ROOT/out/host/linux-x86/bin/mkbootimg" --kernel "$_kernel" --ramdisk "$_ramdisk" --cmdline "$BOARD_KERNEL_CMDLINE" --base "$BOARD_KERNEL_BASE" --pagesize "$BOARD_KERNEL_PAGESIZE" --os_version "$_os_version" --os_patch_level "$_os_patch_level" --ramdisk_offset "$BOARD_RAMDISK_OFFSET" --tags_offset "$BOARD_KERNEL_TAGS_OFFSET" --output "$_boot_out" --id
 
 echo "==> mkbootimg successful, created $_boot_out"
