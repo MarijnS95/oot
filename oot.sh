@@ -97,28 +97,36 @@ for _device in "$@"; do
     # Device specific
     case ${_device} in
     pdx20[36])
+        _soc=sm8250
         _platform=edo
         _kernel_minor=19
         ;;
     kirin|mermaid)
+        _soc=sdm630 # TODO: Check mermaid output
         _platform=ganges
         ;;
     discovery|pioneer|voyager)
+        _soc=sdm630
         _platform=nile
         ;;
     bahamut|griffin)
+        _soc=sm8150
         _platform=kumano
         ;;
     pdx201)
+        _soc=sm6125
         _platform=seine
         ;;
     akari|akatsuki|apollo)
+        _soc=sdm845
         _platform=tama
         ;;
     lilac|maple|poplar)
+        _soc=msm8998
         _platform=yoshino
         ;;
     suzu|kugo)
+        _soc=msm8956
         _platform=loire
         ;;
     *)
