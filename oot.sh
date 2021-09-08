@@ -96,15 +96,17 @@ for _device in "$@"; do
 
     # Device specific
     case ${_device} in
-    pdx20[36])
-        _platform=edo
-        _kernel_minor=19
-        ;;
-    kirin|mermaid)
-        _platform=ganges
+    lilac|maple|poplar)
+        _platform=yoshino
         ;;
     discovery|pioneer|voyager)
         _platform=nile
+        ;;
+    akari|akatsuki|apollo)
+        _platform=tama
+        ;;
+    kirin|mermaid)
+        _platform=ganges
         ;;
     bahamut|griffin)
         _platform=kumano
@@ -112,11 +114,9 @@ for _device in "$@"; do
     pdx201)
         _platform=seine
         ;;
-    akari|akatsuki|apollo)
-        _platform=tama
-        ;;
-    lilac|maple|poplar)
-        _platform=yoshino
+    pdx20[36])
+        _platform=edo
+        _kernel_minor=19
         ;;
     *)
         echo "Device '${_device}' unknown or not implemented"
@@ -126,7 +126,7 @@ for _device in "$@"; do
 
     # Verity
     case ${_platform} in
-    nile|ganges|yoshino)
+    yoshino|nile|ganges)
         _verity_file=build/target/product/security/verity.x509.pem
         _verity_key_id=$(openssl x509 -in $_verity_file -text | grep keyid | sed 's/://g' | tr -d '[:space:]' | tr '[:upper:]' '[:lower:]' | sed 's/keyid//g')
 
@@ -136,11 +136,13 @@ for _device in "$@"; do
 
     # Platform specific
     case ${_platform} in
-    edo)
-        _has_dtbo=true
+    yoshino)
         _recovery_ramdisk=false
+        ;;
+    tama)
+        _has_dtbo=true
 
-        BOARD_KERNEL_CMDLINE+=" msm_drm.blhack_dsi_display0=dsi_panel_somc_${_platform}_cmd:config0"
+        BOARD_KERNEL_CMDLINE+=" msm_drm.dsi_display0=dsi_panel_somc_${_platform}_cmd:config0"
         BOARD_KERNEL_CMDLINE+=" androidboot.bootdevice=1d84000.ufshc"
         BOARD_KERNEL_CMDLINE+=" swiotlb=2048"
         ;;
@@ -157,15 +159,13 @@ for _device in "$@"; do
 
         BOARD_KERNEL_CMDLINE+=" msm_drm.blhack_dsi_display0=dsi_panel_somc_${_platform}_cmd:config0"
         ;;
-    tama)
+    edo)
         _has_dtbo=true
+        _recovery_ramdisk=false
 
-        BOARD_KERNEL_CMDLINE+=" msm_drm.dsi_display0=dsi_panel_somc_${_platform}_cmd:config0"
+        BOARD_KERNEL_CMDLINE+=" msm_drm.blhack_dsi_display0=dsi_panel_somc_${_platform}_cmd:config0"
         BOARD_KERNEL_CMDLINE+=" androidboot.bootdevice=1d84000.ufshc"
         BOARD_KERNEL_CMDLINE+=" swiotlb=2048"
-        ;;
-    yoshino)
-        _recovery_ramdisk=false
         ;;
     esac
 
