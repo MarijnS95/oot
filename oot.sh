@@ -163,7 +163,7 @@ for _device in "$@"; do
 
         BOARD_KERNEL_CMDLINE+=" msm_drm.blhack_dsi_display0=dsi_panel_somc_${_platform}_cmd:config0"
         ;;
-    edo)
+    edo|lena)
         _has_dtbo=true
         _recovery_ramdisk=false
 
@@ -171,13 +171,6 @@ for _device in "$@"; do
         BOARD_KERNEL_CMDLINE+=" androidboot.bootdevice=1d84000.ufshc"
         BOARD_KERNEL_CMDLINE+=" swiotlb=2048"
         ;;
-    lena)
-        _has_dtbo=true
-        _recovery_ramdisk=false
-
-        BOARD_KERNEL_CMDLINE+=" msm_drm.blhack_dsi_display0=dsi_panel_somc_${_platform}_cmd:config0"
-        BOARD_KERNEL_CMDLINE+=" androidboot.bootdevice=1d84000.ufshc"
-        BOARD_KERNEL_CMDLINE+=" swiotlb=2048"
     esac
 
 
