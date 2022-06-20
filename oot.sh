@@ -264,7 +264,7 @@ for _device in "$@"; do
     if [ "$_fastboot_flash" = "true" ]; then
         echo "==> Flashing $_boot_out"
         fastboot flash:raw boot "$_boot_out"
-        if [ "$_has_dtbo" = "true" ]; then
+        if [ -n "$_dtbo_out" ]; then
             echo "==> Flashing $_dtbo_out"
             fastboot flash dtbo "$_dtbo_out"
         fi

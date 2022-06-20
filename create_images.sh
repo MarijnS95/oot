@@ -22,18 +22,22 @@ _ramdisk=$ANDROID_ROOT/out/target/product/$_device/$_ramdisk
 # mkdir -p $(dirname $_boot_out)
 
 if [[ "$_has_dtbo" == "true" ]]; then
-    _dts_folder="$_out/arch/arm64/boot/dts"
-    _files=$(find "$_dts_folder" -iname "*.dtbo")
-    echo "==> Creating dtboimg from $_files"
-    _mkdtboimg="$_kernel_path/scripts/mkdtboimg.py"
-    [[ ! -f "$_mkdtboimg" ]] && _mkdtboimg="$ANDROID_ROOT/prebuilts/misc/linux-x86/libufdt/mkdtimg"
-    [[ ! -f "$_mkdtboimg" ]] && _mkdtboimg="$ANDROID_ROOT/system/libufdt/utils/src/mkdtboimg.py"
-    [[ ! -f "$_mkdtboimg" ]] && (echo "No mkdtbo script/executable found"; exit 1)
-    echo "==> Using mkdtbo at $_mkdtboimg"
-    # --page_size="$BOARD_KERNEL_PAGESIZE"
-    # _files requires word splitting (Tama has multiple dtbo files)
-    # shellcheck disable=SC2086
-    "$_mkdtboimg" create "$_device-dtbo.img" $_files
+    echo "==> Creating empty dtboimg"
+    _dtbo_out=empty_dtbo.img
+    dd if=/dev/zero of="$_dtbo_out" count=2
+
+    # _dts_folder="$_out/arch/arm64/boot/dts"
+    # _files=$(find "$_dts_folder" -iname "*.dtbo")
+    # echo "==> Creating dtboimg from $_files"
+    # _mkdtboimg="$_kernel_path/scripts/mkdtboimg.py"
+    # [[ ! -f "$_mkdtboimg" ]] && _mkdtboimg="$ANDROID_ROOT/prebuilts/misc/linux-x86/libufdt/mkdtimg"
+    # [[ ! -f "$_mkdtboimg" ]] && _mkdtboimg="$ANDROID_ROOT/system/libufdt/utils/src/mkdtboimg.py"
+    # [[ ! -f "$_mkdtboimg" ]] && (echo "No mkdtbo script/executable found"; exit 1)
+    # echo "==> Using mkdtbo at $_mkdtboimg"
+    # # --page_size="$BOARD_KERNEL_PAGESIZE"
+    # # _files requires word splitting (Tama has multiple dtbo files)
+    # # shellcheck disable=SC2086
+    # "$_mkdtboimg" create "$_device-dtbo.img" $_files
 fi
 
 if [[ "$_has_vendor_boot" == "true" ]]; then
