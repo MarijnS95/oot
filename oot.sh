@@ -20,12 +20,11 @@ function usage {
     echo -e '\t-c <compiler>          Select a compiler to use.'
     echo -e '\t                       Currently supported compilers are gcc, linaro_gcc and clang (defaults to clang).'
     echo -e '\t-f                     Flash the kernel after compiling (using fastboot).'
-    echo -e '\t-s                     Separate per-device kernel tmp dir instead of per-platform.'
     echo -e '\t-h, --help             Show the usage of the tool'
 }
 
 
-while getopts 'c:fsh-:' OPT; do
+while getopts 'c:fh-:' OPT; do
     case ${OPT} in
     -)
         case ${OPTARG} in
@@ -50,9 +49,6 @@ while getopts 'c:fsh-:' OPT; do
         ;;
     f)
         _fastboot_flash=true
-        ;;
-    s)
-        _separate_kernel_dir=true
         ;;
     h)
         usage
@@ -87,12 +83,10 @@ BOARD_RAMDISK_OFFSET=0x02000000
 for _device in "$@"; do
     unset BOARD_KERNEL_CMDLINE _platform _has_dtbo _recovery_ramdisk _verity_file _verity_key_id
 
-    BOARD_KERNEL_CMDLINE+=" lpm_levels.sleep_disabled=1"
-    BOARD_KERNEL_CMDLINE+=" service_locator.enable=1"
+    # BOARD_KERNEL_CMDLINE+=" lpm_levels.sleep_disabled=1"
+    # BOARD_KERNEL_CMDLINE+=" service_locator.enable=1"
     BOARD_KERNEL_CMDLINE+=" androidboot.hardware=${_device}"
-
-    _kernel_major=4
-    _kernel_minor=14
+    BOARD_KERNEL_CMDLINE+=" clk_ignore_unused pd_ignore_unused"
 
     # Device specific
     case ${_device} in
@@ -112,8 +106,12 @@ for _device in "$@"; do
         _soc=sdm845
         _platform=tama
         ;;
-    kirin|mermaid)
-        _soc=sdm630 # TODO: Check mermaid output
+    kirin)
+        _soc=sdm630
+        _platform=ganges
+        ;;
+    mermaid)
+        _soc=sdm636
         _platform=ganges
         ;;
     bahamut|griffin)
@@ -127,12 +125,10 @@ for _device in "$@"; do
     pdx20[36])
         _soc=sm8250
         _platform=edo
-        _kernel_minor=19
         ;;
     pdx213)
         _soc=sm6350
         _platform=lena
-        _kernel_minor=19
         ;;
     pdx21[45])
         _soc=sm8350
@@ -170,34 +166,44 @@ for _device in "$@"; do
 
     # Platform specific
     case ${_platform} in
+    loire)
+        BOARD_KERNEL_CMDLINE+=" androidboot.bootdevice=7824900.sdhci"
+        BOARD_KERNEL_CMDLINE+=" earlycon=msm_serial_dm,0x7af0000"
+        BOARD_KERNEL_CMDLINE+=" console=ttyMSM0"
+        BOARD_KERNEL_CMDLINE+=" keep_bootcon"
+        BOARD_KERNEL_CMDLINE+=" maxcpus=4"
+        ;;
     yoshino)
         _recovery_ramdisk=false
+        ;;
+    nile|ganges)
+        BOARD_KERNEL_CMDLINE+=" root=/dev/mmcblk0p78"
+        # BOARD_KERNEL_CMDLINE+=" androidboot.boot_devices=soc/c0c4000.sdhci"
+        # BOARD_KERNEL_CMDLINE+=" androidboot.bootdevice=c0c4000.sdhci"
+        BOARD_KERNEL_CMDLINE+=" earlycon=msm_serial_dm,0xc170000"
+        BOARD_KERNEL_CMDLINE+=" console=ttyMSM0"
+        # BOARD_KERNEL_CMDLINE+=" keep_bootcon"
         ;;
     tama)
         _has_dtbo=true
 
-        BOARD_KERNEL_CMDLINE+=" msm_drm.dsi_display0=dsi_panel_somc_${_platform}_cmd:config0"
         BOARD_KERNEL_CMDLINE+=" androidboot.bootdevice=1d84000.ufshc"
         BOARD_KERNEL_CMDLINE+=" swiotlb=2048"
         ;;
     kumano)
         _has_dtbo=true
 
-        BOARD_KERNEL_CMDLINE+=" msm_drm.blhack_dsi_display0=dsi_panel_somc_${_platform}_cmd:config0"
         BOARD_KERNEL_CMDLINE+=" androidboot.bootdevice=1d84000.ufshc"
         BOARD_KERNEL_CMDLINE+=" swiotlb=2048"
         ;;
     seine)
         _has_dtbo=true
         _recovery_ramdisk=false
-
-        BOARD_KERNEL_CMDLINE+=" msm_drm.blhack_dsi_display0=dsi_panel_somc_${_platform}_cmd:config0"
         ;;
     edo)
         _has_dtbo=true
         _recovery_ramdisk=false
 
-        BOARD_KERNEL_CMDLINE+=" msm_drm.blhack_dsi_display0=dsi_panel_somc_${_platform}_cmd:config0"
         BOARD_KERNEL_CMDLINE+=" androidboot.bootdevice=1d84000.ufshc"
         BOARD_KERNEL_CMDLINE+=" swiotlb=2048"
         ;;
@@ -205,7 +211,6 @@ for _device in "$@"; do
         _has_dtbo=true
         _recovery_ramdisk=false
 
-        BOARD_KERNEL_CMDLINE+=" msm_drm.blhack_dsi_display0=dsi_panel_somc_${_platform}_cmd:config0"
         BOARD_KERNEL_CMDLINE+=" androidboot.bootdevice=1d84000.ufshc"
         BOARD_KERNEL_CMDLINE+=" swiotlb=2048"
         ;;
@@ -235,9 +240,18 @@ for _device in "$@"; do
         ;;
     esac
 
-
     # Options
-    # _permissive=true
+    _permissive=true
+
+    case ${_platform} in
+    loire)
+        _recovery_ramdisk=false
+        ;;
+    *)
+        _recovery_ramdisk=true
+        BOARD_KERNEL_CMDLINE+=" androidboot.force_normal_boot=1"
+        ;;
+    esac
 
     # shellcheck source=./compile.sh
     . "$_self_dir/compile.sh"
@@ -249,7 +263,7 @@ for _device in "$@"; do
 
     if [ "$_fastboot_flash" = "true" ]; then
         echo "==> Flashing $_boot_out"
-        fastboot flash boot "$_boot_out"
+        fastboot flash:raw boot "$_boot_out"
         if [ "$_has_dtbo" = "true" ]; then
             echo "==> Flashing $_dtbo_out"
             fastboot flash dtbo "$_dtbo_out"
