@@ -165,6 +165,7 @@ for _device in "$@"; do
     esac
 
     _ramdisk=$(realpath ~/Downloads/Telegram\ Desktop/debug_initrd.img)
+    _ramdisk="/newdata/SoM/initramfs-linux.img"
 
     # Platform specific
     case ${_platform} in
