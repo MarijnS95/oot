@@ -158,9 +158,9 @@ for _device in "$@"; do
     case ${_platform} in
     yoshino|nile|ganges)
         _verity_file=build/target/product/security/verity.x509.pem
-        _verity_key_id=$(openssl x509 -in $_verity_file -text | grep keyid | sed 's/://g' | tr -d '[:space:]' | tr '[:upper:]' '[:lower:]' | sed 's/keyid//g')
+        # _verity_key_id=$(openssl x509 -in $_verity_file -text | grep keyid | sed 's/://g' | tr -d '[:space:]' | tr '[:upper:]' '[:lower:]' | sed 's/keyid//g')
 
-        BOARD_KERNEL_CMDLINE+=" veritykeyid=id:$_verity_key_id"
+        # BOARD_KERNEL_CMDLINE+=" veritykeyid=id:$_verity_key_id"
         ;;
     esac
 
@@ -177,12 +177,21 @@ for _device in "$@"; do
         BOARD_KERNEL_CMDLINE+=" console=ttyMSM0"
         BOARD_KERNEL_CMDLINE+=" keep_bootcon"
         BOARD_KERNEL_CMDLINE+=" maxcpus=4"
+        # BOARD_KERNEL_CMDLINE+=" root=/dev/mmcblk0p51" # userdata
+        # BOARD_KERNEL_CMDLINE+=" root=/dev/mmcblk0p52" # system
+        BOARD_KERNEL_CMDLINE+=" root=/dev/mmcblk1" # sdcard
         ;;
     yoshino)
         _recovery_ramdisk=false
+        # BOARD_KERNEL_CMDLINE+=" root=/dev/sda64" # vendor
+        # BOARD_KERNEL_CMDLINE+=" root=/dev/sda65" # system
+        # BOARD_KERNEL_CMDLINE+=" root=/dev/sda66" # userdata
+        BOARD_KERNEL_CMDLINE+=" root=/dev/mmcblk0" # sdcard
         ;;
     nile|ganges)
-        BOARD_KERNEL_CMDLINE+=" root=/dev/mmcblk0p78"
+        # BOARD_KERNEL_CMDLINE+=" root=/dev/mmcblk0p76" # userdata
+        # BOARD_KERNEL_CMDLINE+=" root=/dev/mmcblk0p78" # system_a (too small)
+        BOARD_KERNEL_CMDLINE+=" root=/dev/mmcblk1" # sdcard
         # BOARD_KERNEL_CMDLINE+=" androidboot.boot_devices=soc/c0c4000.sdhci"
         # BOARD_KERNEL_CMDLINE+=" androidboot.bootdevice=c0c4000.sdhci"
         BOARD_KERNEL_CMDLINE+=" earlycon=msm_serial_dm,0xc170000"
@@ -191,19 +200,26 @@ for _device in "$@"; do
         ;;
     tama)
         _has_dtbo=true
+        BOARD_KERNEL_CMDLINE+=" root=/dev/mmcblk0" # sdcard
 
-        BOARD_KERNEL_CMDLINE+=" androidboot.bootdevice=1d84000.ufshc"
+        # BOARD_KERNEL_CMDLINE+=" androidboot.bootdevice=1d84000.ufshc"
         BOARD_KERNEL_CMDLINE+=" swiotlb=2048"
         ;;
     kumano)
         _has_dtbo=true
 
+        BOARD_KERNEL_CMDLINE+=" root=/dev/mmcblk0" # sdcard
         # BOARD_KERNEL_CMDLINE+=" androidboot.bootdevice=1d84000.ufshc"
         BOARD_KERNEL_CMDLINE+=" swiotlb=2048"
         ;;
     seine)
         _has_dtbo=true
         _recovery_ramdisk=false
+
+        BOARD_KERNEL_CMDLINE+=" swiotlb=2048"
+        # BOARD_KERNEL_CMDLINE+=" root=/dev/block/mmcblk0p85"
+        #BOARD_KERNEL_CMDLINE+=" root=/dev/mmcblk0p85" # super
+        BOARD_KERNEL_CMDLINE+=" root=/dev/mmcblk1" # sdcard
         ;;
     edo)
         _has_dtbo=true
@@ -211,12 +227,15 @@ for _device in "$@"; do
 
         # BOARD_KERNEL_CMDLINE+=" androidboot.bootdevice=1d84000.ufshc"
         BOARD_KERNEL_CMDLINE+=" swiotlb=2048"
+        BOARD_KERNEL_CMDLINE+=" root=/dev/mmcblk0" # sdcard
         ;;
     lena)
         _has_dtbo=true
         _recovery_ramdisk=false
 
-        BOARD_KERNEL_CMDLINE+=" androidboot.bootdevice=1d84000.ufshc"
+        BOARD_KERNEL_CMDLINE+=" root=/dev/mmcblk0" # sdcard
+        # BOARD_KERNEL_CMDLINE+=" root=/dev/mmcblk1" # sdcard if main MMC were probed..
+        # BOARD_KERNEL_CMDLINE+=" androidboot.bootdevice=1d84000.ufshc"
         BOARD_KERNEL_CMDLINE+=" swiotlb=2048"
         ;;
     sagami)
