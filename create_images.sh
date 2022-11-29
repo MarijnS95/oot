@@ -41,7 +41,9 @@ if [[ "$_has_dtbo" == "true" ]]; then
 fi
 
 if [[ "$_has_vendor_boot" == "true" ]]; then
-    echo "TODO: Create and flash vendor_boot"; exit 1
+    echo "==> Creating empty vendor_boot"
+    _vendor_boot_out=empty_vendor_boot.img
+    dd if=/dev/zero of="$_vendor_boot_out" count=0
 fi
 
 if [[ "${_permissive:-false}" == "true" ]]; then

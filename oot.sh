@@ -268,6 +268,10 @@ for _device in "$@"; do
             echo "==> Flashing $_dtbo_out"
             fastboot flash dtbo "$_dtbo_out"
         fi
+        if [ -n "$_vendor_boot_out" ]; then
+            echo "==> Flashing $_vendor_boot_out"
+            fastboot flash vendor_boot "$_vendor_boot_out"
+        fi
 
         echo "==> Rebooting device..."
         fastboot continue || fastboot reboot
