@@ -87,6 +87,8 @@ for _device in "$@"; do
     # BOARD_KERNEL_CMDLINE+=" service_locator.enable=1"
     BOARD_KERNEL_CMDLINE+=" androidboot.hardware=${_device}"
     BOARD_KERNEL_CMDLINE+=" clk_ignore_unused pd_ignore_unused"
+    BOARD_KERNEL_CMDLINE+=" PMOS_NO_OUTPUT_REDIRECT"
+    BOARD_KERNEL_CMDLINE+=" log_buf_len=8M"
 
     # Device specific
     case ${_device} in
@@ -166,6 +168,7 @@ for _device in "$@"; do
 
     _ramdisk=$(realpath ~/Downloads/Telegram\ Desktop/debug_initrd.img)
     _ramdisk="/newdata/SoM/initramfs-linux.img"
+    #_ramdisk=$(realpath ~/Downloads/initramfs-test-image-qcom-armv8a-20220929073818-999.rootfs.cpio.gz)
 
     # Platform specific
     case ${_platform} in

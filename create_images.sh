@@ -74,7 +74,7 @@ echo "$BOARD_KERNEL_CMDLINE"
 echo "==> Creating $_boot_out..."
 echo "==> Using $_ramdisk"
 
-"$ANDROID_ROOT/out/host/linux-x86/bin/mkbootimg" \
+"$ANDROID_ROOT/../aosp-s/out/host/linux-x86/bin/mkbootimg" \
     --kernel "$_kernel" \
     --ramdisk "$_ramdisk" \
     --cmdline "$BOARD_KERNEL_CMDLINE" \
