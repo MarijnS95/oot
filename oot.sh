@@ -122,6 +122,11 @@ for _device in "$@"; do
         _platform=lena
         _kernel_minor=19
         ;;
+    pdx21[45])
+        _platform=sagami
+        _kernel_major=5
+        _kernel_minor=4
+        ;;
     *)
         echo "Device '${_device}' unknown or not implemented"
         exit 1
@@ -176,6 +181,15 @@ for _device in "$@"; do
         _recovery_ramdisk=false
 
         BOARD_KERNEL_CMDLINE+=" msm_drm.blhack_dsi_display0=dsi_panel_somc_${_platform}_cmd:config0"
+        BOARD_KERNEL_CMDLINE+=" androidboot.bootdevice=1d84000.ufshc"
+        BOARD_KERNEL_CMDLINE+=" swiotlb=2048"
+        ;;
+    sagami)
+        _has_dtbo=true
+        _has_vendor_boot=true
+        _mkbootimg_args=(--header_version 1)
+
+        BOARD_KERNEL_CMDLINE+=" root=/dev/mmcblk0" # sdcard
         BOARD_KERNEL_CMDLINE+=" androidboot.bootdevice=1d84000.ufshc"
         BOARD_KERNEL_CMDLINE+=" swiotlb=2048"
         ;;

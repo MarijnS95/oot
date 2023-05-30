@@ -36,6 +36,10 @@ if [[ "$_has_dtbo" == "true" ]]; then
     "$_mkdtboimg" create "$_device-dtbo.img" $_files
 fi
 
+if [[ "$_has_vendor_boot" == "true" ]]; then
+    echo "TODO: Create and flash vendor_boot"; exit 1
+fi
+
 if [[ "${_permissive:-false}" == "true" ]]; then
     echo "==> Adding permissive to cmdline"
     BOARD_KERNEL_CMDLINE+=" androidboot.selinux=permissive"
@@ -57,6 +61,18 @@ echo "$BOARD_KERNEL_CMDLINE"
 
 echo "==> Creating $_boot_out..."
 
-"$ANDROID_ROOT/out/host/linux-x86/bin/mkbootimg" --kernel "$_kernel" --ramdisk "$_ramdisk" --cmdline "$BOARD_KERNEL_CMDLINE" --base "$BOARD_KERNEL_BASE" --pagesize "$BOARD_KERNEL_PAGESIZE" --os_version "$_os_version" --os_patch_level "$_os_patch_level" --ramdisk_offset "$BOARD_RAMDISK_OFFSET" --tags_offset "$BOARD_KERNEL_TAGS_OFFSET" --output "$_boot_out" --id
+"$ANDROID_ROOT/out/host/linux-x86/bin/mkbootimg" \
+    --kernel "$_kernel" \
+    --ramdisk "$_ramdisk" \
+    --cmdline "$BOARD_KERNEL_CMDLINE" \
+    --base "$BOARD_KERNEL_BASE" \
+    --pagesize "$BOARD_KERNEL_PAGESIZE" \
+    --os_version "$_os_version" \
+    --os_patch_level "$_os_patch_level" \
+    --ramdisk_offset "$BOARD_RAMDISK_OFFSET" \
+    --tags_offset "$BOARD_KERNEL_TAGS_OFFSET" \
+    "${_mkbootimg_args[@]}" \
+    --output "$_boot_out" \
+    --id
 
 echo "==> mkbootimg successful, created $_boot_out"
