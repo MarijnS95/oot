@@ -177,9 +177,12 @@ for _device in "$@"; do
         BOARD_KERNEL_CMDLINE+=" androidboot.boot_devices=soc/7824900.sdhci"
         # Creates a /dev/block/bootdevice link to this device:
         BOARD_KERNEL_CMDLINE+=" androidboot.bootdevice=7824900.sdhci"
+        # warning: this makes stdout-path in DTS "work" before UART probes, resulting in dupes
         BOARD_KERNEL_CMDLINE+=" earlycon=msm_serial_dm,0x7af0000"
+        # Without this we somehow get dupes as soon as kernel switches to console, afaik because of stdout-path?
         BOARD_KERNEL_CMDLINE+=" console=ttyMSM0"
-        BOARD_KERNEL_CMDLINE+=" keep_bootcon"
+        # stdout-path in DTS would also keep running otherwise
+        # BOARD_KERNEL_CMDLINE+=" keep_bootcon"
         BOARD_KERNEL_CMDLINE+=" maxcpus=4"
         # BOARD_KERNEL_CMDLINE+=" root=/dev/mmcblk0p51" # userdata
         # BOARD_KERNEL_CMDLINE+=" root=/dev/mmcblk0p52" # system
