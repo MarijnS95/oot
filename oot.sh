@@ -127,6 +127,12 @@ for _device in "$@"; do
         _kernel_major=5
         _kernel_minor=4
         ;;
+    pdx22[34])
+        _soc=sm8450
+        _platform=nagara
+        _kernel_major=5
+        _kernel_minor=10
+        ;;
     *)
         echo "Device '${_device}' unknown or not implemented"
         exit 1
@@ -191,6 +197,13 @@ for _device in "$@"; do
 
         BOARD_KERNEL_CMDLINE+=" root=/dev/mmcblk0" # sdcard
         BOARD_KERNEL_CMDLINE+=" androidboot.bootdevice=1d84000.ufshc"
+        BOARD_KERNEL_CMDLINE+=" swiotlb=2048"
+        ;;
+    nagara)
+        _has_dtbo=true
+        _has_vendor_boot=true
+        _mkbootimg_args=(--header_version 4)
+        BOARD_KERNEL_CMDLINE+=" root=/dev/mmcblk0" # sdcard
         BOARD_KERNEL_CMDLINE+=" swiotlb=2048"
         ;;
     esac
