@@ -257,7 +257,7 @@ for _device in "$@"; do
     nagara)
         _has_dtbo=true
         _has_vendor_boot=true
-        _mkbootimg_args=(--header_version 4)
+        _mkbootimg_args=(--header_version 1)
         BOARD_KERNEL_CMDLINE+=" root=/dev/mmcblk0" # sdcard
         BOARD_KERNEL_CMDLINE+=" swiotlb=2048"
         ;;
